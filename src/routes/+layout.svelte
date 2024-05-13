@@ -1,25 +1,27 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import { Skull, CircleHelp } from 'lucide-svelte';
 </script>
 
 <svelte:head>
 	<title>Chunker UI</title>
-	<meta name="description" content="Application for testing text chunking schemes">
+	<meta name="description" content="Application for testing text chunking schemes" />
 </svelte:head>
 
-<!-- App Shell -->
-<AppShell>
-	<svelte:fragment slot="header">
-		<!-- App Bar -->
-		<AppBar>
-			<svelte:fragment slot="lead">
-				<strong class="text-lg md:text-xl tracking-tighter uppercase gradient-text">
-					Chunker UI
-				</strong>
-			</svelte:fragment>
-			<svelte:fragment slot="trail">
+<div class="flex flex-col w-full min-h-screen">
+	<header class="bg-surface-900/60 h-16 w-full">
+		<div
+			class="w-full h-full max-w-screen-xl mx-auto flex items-center justify-between px-2 md:px-6"
+		>
+			<div>
+				<a href="/">
+					<strong class="text-lg md:text-xl tracking-tighter uppercase gradient-text">
+						Chunker UI
+					</strong>
+				</a>
+			</div>
+
+			<nav class="flex items-center gap-3">
 				<a
 					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
 					href="/chunk"
@@ -34,12 +36,14 @@
 				>
 					<CircleHelp class="size-6" />
 				</a>
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
-	<!-- Page Route Content -->
-	<slot />
-</AppShell>
+			</nav>
+		</div>
+	</header>
+
+	<main class="w-full flex-1 flex flex-col">
+		<slot />
+	</main>
+</div>
 
 <style>
 	.gradient-text {
