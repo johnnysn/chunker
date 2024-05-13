@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { Skull, CircleHelp } from 'lucide-svelte';
+	import { Skull, CircleHelp, Settings } from 'lucide-svelte';
 </script>
 
 <svelte:head>
@@ -28,6 +28,13 @@
 					aria-label="Chunk"
 				>
 					<Skull class="size-6" />
+				</a>
+				<a
+					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
+					href="/config"
+					aria-label="Chunk"
+				>
+					<Settings class="size-6" />
 				</a>
 				<a
 					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
