@@ -21,7 +21,7 @@
 			<p>Get the source code or contact me:</p>
 
 			<div class="flex justify-center gap-6 items-center">
-				<a href="" target="_blank" rel="noreferrer">
+				<a href="https://github.com/johnnysn" target="_blank" rel="noreferrer">
 					<Github class="size-12" />
 				</a>
 				<a

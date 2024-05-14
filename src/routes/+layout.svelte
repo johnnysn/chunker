@@ -31,8 +31,8 @@
 				</a>
 				<a
 					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
-					href="/config"
-					aria-label="Chunk"
+					href="/settings"
+					aria-label="Settings"
 				>
 					<Settings class="size-6" />
 				</a>

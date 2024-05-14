@@ -1,25 +1,25 @@
 <script lang="ts">
-	import { configFormSchema } from '$lib/schemas/config.schema';
-	import { config } from '$lib/stores/config-store';
+	import { apiConfigFormSchema } from "$lib/schemas/api-config-schema";
+	import { apiConfig } from "$lib/stores/api-config-store";
 
-	let baseUrl = $config.baseUrl;
-	let methodsEndpoint = $config.methodsEndpoint;
+	let baseUrl = $apiConfig.baseUrl;
+	let methodsEndpoint = $apiConfig.methodsEndpoint;
 
   function submit(evt: SubmitEvent) {
     evt.preventDefault();
 
     const data = new FormData(evt.target as HTMLFormElement);
 
-    const {baseUrl, methodsEndpoint} = configFormSchema.parse(data);
+    const {baseUrl, methodsEndpoint} = apiConfigFormSchema.parse(data);
 
-    config.patch({
+    apiConfig.patch({
       baseUrl, methodsEndpoint
     });
   }
 </script>
 
 <form class="flex flex-col gap-3" on:submit={submit}>
-	<h2 class="h2 mb-6">API Config</h2>
+	<h2 class="h2 mb-6">API config</h2>
 
 	<label class="label max-w-md">
 		<span>Base URL</span>

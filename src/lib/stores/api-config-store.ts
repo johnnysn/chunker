@@ -1,6 +1,6 @@
 import { browser } from "$app/environment";
-import { configSchema } from "$lib/schemas/config.schema";
-import type { Config } from "$lib/types/config";
+import { apiConfigFormSchema } from "$lib/schemas/api-config-schema";
+import { type ApiConfig } from "$lib/types/api-config";
 import { writable, type Updater } from "svelte/store";
 
 const defaultConfig = {
@@ -9,14 +9,14 @@ const defaultConfig = {
 };
 
 export function createConfigStore() {
-  const actualStore = writable<Config>(defaultConfig, (set) => {
+  const actualStore = writable<ApiConfig>(defaultConfig, (set) => {
     if (browser) {
-      const configItem = localStorage.getItem("config");
+      const configItem = localStorage.getItem("api-config");
 
       if (configItem) {
         const obj = JSON.parse(configItem);
 
-        const configObj = configSchema.parse(obj);
+        const configObj = apiConfigFormSchema.parse(obj);
 
         set(configObj);
       }
@@ -26,17 +26,17 @@ export function createConfigStore() {
   });
 
 
-  function update(updater: Updater<Config>) {
+  function update(updater: Updater<ApiConfig>) {
     actualStore.update(curr => {
       const newValue = updater(curr);
 
-      localStorage.setItem("config", JSON.stringify(newValue));
+      localStorage.setItem("api-config", JSON.stringify(newValue));
 
       return newValue;
     });
   }
 
-  function patch(data: Partial<Config>) {
+  function patch(data: Partial<ApiConfig>) {
     update(curr => {
       return {
         ...curr,
@@ -52,4 +52,4 @@ export function createConfigStore() {
   }
 }
 
-export const config = createConfigStore();
+export const apiConfig = createConfigStore();

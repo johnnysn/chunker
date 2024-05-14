@@ -4,12 +4,12 @@ import { zfd } from "zod-form-data";
 const url = z.string().url();
 const endpoint = z.string().startsWith("/");
 
-export const configSchema = z.object({
+export const apiConfigSchema = z.object({
   baseUrl: url,
   methodsEndpoint: endpoint
 });
 
-export const configFormSchema = zfd.formData({
+export const apiConfigFormSchema = zfd.formData({
   baseUrl: zfd.text(url),
   methodsEndpoint: zfd.text(endpoint),
 });

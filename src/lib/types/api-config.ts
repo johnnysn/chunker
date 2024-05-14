@@ -1,4 +1,4 @@
-export interface Config {
+export interface ApiConfig {
   baseUrl: string,
   methodsEndpoint: string
 };
