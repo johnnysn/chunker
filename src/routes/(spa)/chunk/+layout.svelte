@@ -1,8 +1,33 @@
 <script lang="ts">
 	import { page } from "$app/stores";
+	import { methodSchema } from "$lib/schemas/method-schema";
+	import { apiConfig } from "$lib/stores/api-config-store";
+	import { methods } from "$lib/stores/methods-store";
 	import { Aperture, Settings } from "lucide-svelte";
+	import { z } from "zod";
 
   $: classesActive = (href: string) => (href === $page.url.pathname ? '!variant-filled-primary' : '');
+
+  $: {
+    const { baseUrl, methodsEndpoint } = $apiConfig;
+
+    const fetchMethods = async () => {
+      const response = await fetch(baseUrl + methodsEndpoint);
+
+      if (response.ok) {
+        const data = await response.json();
+
+        const methodsData = z.array(methodSchema).safeParse(data);
+        console.log(methodsData);
+
+        if (methodsData.success) {
+          methods.set(methodsData.data);
+        }
+      }
+    };
+
+    fetchMethods();
+  }
 </script>
 <div class="flex">
   <div class="w-1/4 mr-6 bg-surface-500/5 h-[300px]">

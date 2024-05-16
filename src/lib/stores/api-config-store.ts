@@ -4,7 +4,7 @@ import { type ApiConfig } from "$lib/types/api-config";
 import { writable, type Updater } from "svelte/store";
 
 const defaultConfig = {
-  baseUrl: 'http://localhost:8000',
+  baseUrl: 'http://localhost:5000',
   methodsEndpoint: '/methods'
 };
 
