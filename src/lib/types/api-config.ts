@@ -1,4 +1,5 @@
 export interface ApiConfig {
   baseUrl: string,
-  methodsEndpoint: string
+  methodsEndpoint: string,
+  chunkRawEndpoint: string
 };

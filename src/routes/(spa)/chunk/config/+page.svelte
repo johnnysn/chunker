@@ -4,16 +4,17 @@
 
 	let baseUrl = $apiConfig.baseUrl;
 	let methodsEndpoint = $apiConfig.methodsEndpoint;
+	let chunkRawEndpoint = $apiConfig.chunkRawEndpoint;
 
   function submit(evt: SubmitEvent) {
     evt.preventDefault();
 
     const data = new FormData(evt.target as HTMLFormElement);
 
-    const {baseUrl, methodsEndpoint} = apiConfigFormSchema.parse(data);
+    const {baseUrl, methodsEndpoint, chunkRawEndpoint} = apiConfigFormSchema.parse(data);
 
     apiConfig.patch({
-      baseUrl, methodsEndpoint
+      baseUrl, methodsEndpoint, chunkRawEndpoint
     });
   }
 </script>
@@ -42,8 +43,18 @@
 	</label>
 
 	<label class="label max-w-md">
-		<span>Raw text chunk</span>
-		<input type="text" class="input" placeholder="Endpoint for chunking raw text" />
+		<span>Chunk raw text</span>
+		<input
+			type="text"
+			class="input"
+			placeholder="Endpoint for chunking raw text"
+      name="chunkRawEndpoint"
+			bind:value={chunkRawEndpoint}
+			required
+		/>
+		<p class="text-sm">
+			Example: <span class="code">/chunks/raw</span>
+		</p>
 	</label>
 
 	<div class="mt-6 flex flex-start gap-3">

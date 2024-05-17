@@ -5,7 +5,8 @@ import { writable, type Updater } from "svelte/store";
 
 const defaultConfig = {
   baseUrl: 'http://localhost:5000',
-  methodsEndpoint: '/methods'
+  methodsEndpoint: '/methods',
+  chunkRawEndpoint: '/chunks/raw'
 };
 
 export function createConfigStore() {
@@ -16,9 +17,9 @@ export function createConfigStore() {
       if (configItem) {
         const obj = JSON.parse(configItem);
 
-        const configObj = apiConfigFormSchema.parse(obj);
+        const configObj = apiConfigFormSchema.safeParse(obj);
 
-        set(configObj);
+        if (configObj.success) set(configObj.data);
       }
     }
 

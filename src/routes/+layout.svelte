@@ -1,12 +1,18 @@
 <script lang="ts">
 	import '../app.postcss';
 	import { Skull, CircleHelp, Settings } from 'lucide-svelte';
+
+	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+
+	initializeStores();
 </script>
 
 <svelte:head>
 	<title>Chunker UI</title>
 	<meta name="description" content="Application for testing text chunking schemes" />
 </svelte:head>
+
+<Toast />
 
 <div class="flex flex-col w-full min-h-screen">
 	<header class="bg-surface-900/60 h-16 w-full">
