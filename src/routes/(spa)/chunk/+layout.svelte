@@ -7,6 +7,8 @@
 	import { Aperture, CheckCircle, Info, Loader2, Settings, TriangleAlert } from 'lucide-svelte';
 	import { z } from 'zod';
 	import { getToastStore } from '@skeletonlabs/skeleton';
+	import ChunksAccordion from '$lib/components/ChunksAccordion.svelte';
+	import { chunks } from '$lib/stores/chunks-store';
 
 	const toastStore = getToastStore();
 
@@ -113,4 +115,8 @@
 	<div class="w-3/4 py-2">
 		<slot />
 	</div>
+</div>
+<div class="card mt-4">
+	<div class="card-header"><h3 class="h3 mb-4">Retrieved Chunks</h3></div>
+	<div class="card-content"><ChunksAccordion chunks={$chunks} /></div>
 </div>

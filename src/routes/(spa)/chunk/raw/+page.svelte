@@ -3,6 +3,9 @@
 	import { appStatus } from '$lib/stores/app-status-store';
 	import { apiConfig } from '$lib/stores/api-config-store';
 	import { methods } from '$lib/stores/methods-store';
+	import { z } from 'zod';
+	import { chunkSchema } from '$lib/schemas/chunk-schema';
+	import { chunks } from '$lib/stores/chunks-store';
 
 	const toasts = getToastStore();
   $: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
@@ -18,7 +21,8 @@
 				body: JSON.stringify({ methodId, text })
 			});
 			const data = await response.json();
-			console.log(data);
+			const { chunks: retrievedChunks } = z.object({ chunks: z.array(chunkSchema) }).parse(data);
+			chunks.set(retrievedChunks);
 
 			toasts.trigger({
 				message: "Chunks retrieved from the API",
