@@ -4,7 +4,15 @@
 	import { apiConfig } from '$lib/stores/api-config-store';
 	import { appStatus } from '$lib/stores/app-status-store';
 	import { methods } from '$lib/stores/methods-store';
-	import { Aperture, CheckCircle, Info, Loader2, Settings, TriangleAlert } from 'lucide-svelte';
+	import {
+		Aperture,
+		CheckCircle,
+		Info,
+		Loader2,
+		RefreshCcw,
+		Settings,
+		TriangleAlert
+	} from 'lucide-svelte';
 	import { z } from 'zod';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import ChunksAccordion from '$lib/components/ChunksAccordion.svelte';
@@ -18,48 +26,41 @@
 	$: classesActive = (href: string) =>
 		href === $page.url.pathname ? '!variant-filled-primary' : '';
 
+	const fetchMethods = async (baseUrl: string, methodsEndpoint: string) => {
+		appStatus.setIsFetchingParameters(true);
+		appStatus.setIsParametersFetched(false);
+		let ok = false;
+		try {
+			const response = await fetch(baseUrl + methodsEndpoint);
+			appStatus.setIsFetchingParameters(false);
+
+			if (response.ok) {
+				const data = await response.json();
+
+				const methodsData = z.array(methodSchema).safeParse(data);
+
+				if (methodsData.success) {
+					methods.set(methodsData.data);
+					appStatus.setIsParametersFetched(true);
+					ok = true;
+				}
+			}
+		} catch (err) {
+			appStatus.setIsFetchingParameters(false);
+		}
+
+		if (!ok) {
+			toastStore.trigger({
+				message: 'Could not retrieve parameters from the API',
+				background: 'variant-filled-error',
+				timeout: 3000
+			});
+		}
+	};
+
 	$: {
 		const { baseUrl, methodsEndpoint } = $apiConfig;
-
-		const fetchMethods = async () => {
-			appStatus.setIsFetchingParameters(true);
-			appStatus.setIsParametersFetched(false);
-			let ok = false;
-			try {
-				const response = await fetch(baseUrl + methodsEndpoint);
-				appStatus.setIsFetchingParameters(false);
-
-				if (response.ok) {
-					const data = await response.json();
-
-					const methodsData = z.array(methodSchema).safeParse(data);
-
-					if (methodsData.success) {
-						methods.set(methodsData.data);
-						appStatus.setIsParametersFetched(true);
-
-						toastStore.trigger({
-							message: 'Parameters have been fetched from the API',
-							background: 'variant-filled-success',
-							timeout: 3000
-						});
-						ok = true;
-					}
-				}
-			} catch (err) {
-				appStatus.setIsFetchingParameters(false);
-			}
-
-			if (!ok) {
-				toastStore.trigger({
-					message: 'Could not retrieve parameters from the API',
-					background: 'variant-filled-error',
-					timeout: 3000
-				});
-			}
-		};
-
-		fetchMethods();
+		fetchMethods(baseUrl, methodsEndpoint);
 	}
 
 	$: {
@@ -73,7 +74,7 @@
 			statusMessage = 'Parameters fetched from API';
 			statusType = 'success';
 		} else {
-			statusMessage = 'Please, configure API';
+			statusMessage = 'Please, setup API';
 			statusType = 'warning';
 		}
 	}
@@ -92,6 +93,10 @@
 		{/if}
 
 		<span>{statusMessage}</span>
+
+		<button class="btn-icon btn-icon-sm variant-ghost ml-3" on:click={() => fetchMethods($apiConfig.baseUrl, $apiConfig.methodsEndpoint)}>
+			<RefreshCcw class="size-4" />
+		</button>
 	</div>
 </div>
 <div class="flex">

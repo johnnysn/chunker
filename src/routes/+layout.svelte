@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { Skull, CircleHelp, Settings } from 'lucide-svelte';
+	import { CircleHelp, Settings, Clapperboard } from 'lucide-svelte';
 
 	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
 
@@ -33,7 +33,7 @@
 					href="/chunk"
 					aria-label="Chunk"
 				>
-					<Skull class="size-6" />
+					<Clapperboard class="size-6" />
 				</a>
 				<a
 					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
