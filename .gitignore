@@ -22,6 +22,9 @@ dist/
 # Arquivos de testes
 *.test
 
+# Arquivos de IDE
+.idea/
+
 # Outros arquivos e diretórios ignorados
 .DS_Store
 Thumbs.db
