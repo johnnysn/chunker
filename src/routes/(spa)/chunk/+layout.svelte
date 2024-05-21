@@ -94,7 +94,10 @@
 
 		<span>{statusMessage}</span>
 
-		<button class="btn-icon btn-icon-sm variant-ghost ml-3" on:click={() => fetchMethods($apiConfig.baseUrl, $apiConfig.methodsEndpoint)}>
+		<button
+			class="btn-icon btn-icon-sm variant-ghost ml-3"
+			on:click={() => fetchMethods($apiConfig.baseUrl, $apiConfig.methodsEndpoint)}
+		>
 			<RefreshCcw class="size-4" />
 		</button>
 	</div>
@@ -121,7 +124,9 @@
 		<slot />
 	</div>
 </div>
-<div class="card mt-4">
-	<div class="card-header"><h3 class="h3 mb-4">Retrieved Chunks</h3></div>
-	<div class="card-content"><ChunksAccordion chunks={$chunks} /></div>
-</div>
+<section class="card mt-4" id="retrieved-chunks">
+	{#if $chunks.length > 0}
+		<div class="card-header"><h3 class="h3 mb-4">Retrieved Chunks</h3></div>
+		<div class="card-content"><ChunksAccordion chunks={$chunks} /></div>
+	{/if}
+</section>

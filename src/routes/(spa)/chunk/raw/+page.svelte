@@ -7,6 +7,8 @@
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
 	import { chunks } from '$lib/stores/chunks-store';
 
+	let chunkSize = 1;
+
 	const toasts = getToastStore();
 	$: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
 
@@ -86,6 +88,7 @@
 				max="1000"
 				required
 				name="chunkSize"
+				bind:value={chunkSize}
 			/>
 			<span class="text-xs">Number of paragraphs, sentences, etc</span>
 		</label>
