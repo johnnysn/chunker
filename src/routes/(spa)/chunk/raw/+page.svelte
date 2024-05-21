@@ -6,13 +6,12 @@
 	import { z } from 'zod';
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
 	import { chunks } from '$lib/stores/chunks-store';
-
-	let chunkSize = 1;
+	import ParametersFormGroup from '$lib/components/ParametersFormGroup.svelte';
 
 	const toasts = getToastStore();
 	$: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
 
-	const submitToServer = async (methodId: string, text: string, chunkSize: number) => {
+	const submitToServer = async (methodId: string, text: string, chunkSize: number, chunkOverlap: number) => {
 		appStatus.setIsLoading(true);
 		try {
 			const response = await fetch(postUrl, {
@@ -20,7 +19,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ methodId, text, chunkSize })
+				body: JSON.stringify({ methodId, text, chunkSize, chunkOverlap })
 			});
 			const data = await response.json();
 			const { chunks: retrievedChunks } = z.object({ chunks: z.array(chunkSchema) }).parse(data);
@@ -49,7 +48,8 @@
 		submitToServer(
 			data.get('methodId') as string, 
 			data.get('text') as string,
-			Number(data.get('chunkSize'))
+			Number(data.get('chunkSize')),
+			Number(data.get('chunkOverlap')),
 		);
 	}
 </script>
@@ -78,20 +78,7 @@
 			</select>
 		</label>
 
-		<label class="label flex flex-col">
-			<span>Chunk size</span>
-			<input
-				type="number"
-				class="input w-32"
-				step="1"
-				min="0"
-				max="1000"
-				required
-				name="chunkSize"
-				bind:value={chunkSize}
-			/>
-			<span class="text-xs">Number of paragraphs, sentences, etc</span>
-		</label>
+		<ParametersFormGroup />
 
 		<div class="flex justify-start gap-3 mt-6">
 			<button class="btn variant-filled-primary" disabled={$appStatus.isLoading}>Send</button>

@@ -7,7 +7,7 @@
 </script>
 
 <Accordion>
-	{#each chunks as chunk}
+	{#each chunks as chunk (chunk.number)}
 		<AccordionItem>
 			<svelte:fragment slot="lead"><strong>#{chunk.number}</strong></svelte:fragment>
 			<svelte:fragment slot="summary"><strong>{ chunk.tag ?? 'Text chunk' }</strong></svelte:fragment>
