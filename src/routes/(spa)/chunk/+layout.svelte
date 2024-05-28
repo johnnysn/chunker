@@ -5,26 +5,23 @@
 	import { appStatus } from '$lib/stores/app-status-store';
 	import { methods } from '$lib/stores/methods-store';
 	import {
-		Aperture,
 		CheckCircle,
 		Info,
 		Loader2,
 		RefreshCcw,
-		Settings,
 		TriangleAlert
 	} from 'lucide-svelte';
 	import { z } from 'zod';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import ChunksAccordion from '$lib/components/ChunksAccordion.svelte';
 	import { chunks } from '$lib/stores/chunks-store';
+	import Sidenav from './Sidenav.svelte';
+	import Sidehistory from './Sidehistory.svelte';
 
 	const toastStore = getToastStore();
 
 	let statusMessage = '';
 	let statusType: '' | 'info' | 'loading' | 'warning' | 'success' = '';
-
-	$: classesActive = (href: string) =>
-		href === $page.url.pathname ? '!variant-filled-primary' : '';
 
 	const fetchMethods = async (baseUrl: string, methodsEndpoint: string) => {
 		appStatus.setIsFetchingParameters(true);
@@ -103,25 +100,16 @@
 	</div>
 </div>
 <div class="flex">
-	<div class="w-1/4 mr-6 bg-surface-500/5">
-		<nav class="list-nav mt-2">
-			<ul>
-				<li>
-					<a href={'/chunk/config'} class={classesActive('/chunk/config')}>
-						<span><Settings class="size-6" /></span>
-						<span class="flex-auto">API Config</span>
-					</a>
-					<a href={'/chunk/raw'} class={classesActive('/chunk/raw')}>
-						<span><Aperture class="size-6" /></span>
-						<span class="flex-auto">Raw text</span>
-					</a>
-				</li>
-			</ul>
-		</nav>
+	<div class="w-1/5 mr-6 bg-surface-500/5">
+		<Sidenav />
 	</div>
 
-	<div class="w-3/4 py-2">
+	<div class="w-3/5 py-2">
 		<slot />
+	</div>
+
+	<div class="w-1/5 bg-surface-500/5 ml-6 py-2">
+		<Sidehistory />
 	</div>
 </div>
 <section class="card mt-4" id="retrieved-chunks">

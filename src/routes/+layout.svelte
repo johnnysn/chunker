@@ -56,6 +56,12 @@
 	<main class="w-full flex-1 flex flex-col">
 		<slot />
 	</main>
+
+	<footer class="py-6 mt-6">
+		<p class="text-center">
+			{new Date().getFullYear()} &copy; Johnny Moreira Gomes
+		</p>
+	</footer>
 </div>
 
 <style>

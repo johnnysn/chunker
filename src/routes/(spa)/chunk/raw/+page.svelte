@@ -7,11 +7,17 @@
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
 	import { chunks } from '$lib/stores/chunks-store';
 	import ParametersFormGroup from '$lib/components/ParametersFormGroup.svelte';
+	import { requests } from '$lib/stores/requests-store';
 
 	const toasts = getToastStore();
 	$: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
 
-	const submitToServer = async (methodId: string, text: string, chunkSize: number, chunkOverlap: number) => {
+	const submitToServer = async (
+		methodId: string,
+		text: string,
+		chunkSize: number,
+		chunkOverlap: number
+	) => {
 		appStatus.setIsLoading(true);
 		try {
 			const response = await fetch(postUrl, {
@@ -24,6 +30,17 @@
 			const data = await response.json();
 			const { chunks: retrievedChunks } = z.object({ chunks: z.array(chunkSchema) }).parse(data);
 			chunks.set(retrievedChunks);
+
+			requests.append(
+				{
+					methodId,
+					text,
+					chunkOverlap,
+					chunkSize,
+					separator: ''
+				},
+				retrievedChunks
+			);
 
 			toasts.trigger({
 				message: 'Chunks retrieved from the API',
@@ -46,10 +63,10 @@
 
 		const data = new FormData(evt.target as HTMLFormElement);
 		submitToServer(
-			data.get('methodId') as string, 
+			data.get('methodId') as string,
 			data.get('text') as string,
 			Number(data.get('chunkSize')),
-			Number(data.get('chunkOverlap')),
+			Number(data.get('chunkOverlap'))
 		);
 	}
 </script>
@@ -59,7 +76,7 @@
 
 	<form class="flex flex-col gap-3" on:submit={submit}>
 		<label class="label">
-			<span>Text</span>
+			<span>Your text</span>
 			<textarea
 				class="textarea"
 				rows="12"
