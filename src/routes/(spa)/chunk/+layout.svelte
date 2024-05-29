@@ -1,22 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { methodSchema } from '$lib/schemas/method-schema';
 	import { apiConfig } from '$lib/stores/api-config-store';
 	import { appStatus } from '$lib/stores/app-status-store';
 	import { methods } from '$lib/stores/methods-store';
-	import {
-		CheckCircle,
-		Info,
-		Loader2,
-		RefreshCcw,
-		TriangleAlert
-	} from 'lucide-svelte';
+	import { CheckCircle, Info, Loader2, RefreshCcw, TriangleAlert } from 'lucide-svelte';
 	import { z } from 'zod';
 	import { getToastStore } from '@skeletonlabs/skeleton';
-	import ChunksAccordion from '$lib/components/ChunksAccordion.svelte';
-	import { chunks } from '$lib/stores/chunks-store';
 	import Sidenav from './Sidenav.svelte';
 	import Sidehistory from './Sidehistory.svelte';
+	import Results from './Results.svelte';
 
 	const toastStore = getToastStore();
 
@@ -112,9 +104,15 @@
 		<Sidehistory />
 	</div>
 </div>
+
 <section class="card mt-4" id="retrieved-chunks">
-	{#if $chunks.length > 0}
-		<div class="card-header"><h3 class="h3 mb-4">Retrieved Chunks</h3></div>
-		<div class="card-content"><ChunksAccordion chunks={$chunks} /></div>
+	{#if $appStatus.isLoading}
+		<div class="p-4 space-y-4 w-full">
+			<div class="placeholder animate-pulse"></div>
+			<div class="placeholder animate-pulse"></div>
+			<div class="placeholder animate-pulse"></div>
+		</div>
+	{:else}
+		<Results />
 	{/if}
 </section>

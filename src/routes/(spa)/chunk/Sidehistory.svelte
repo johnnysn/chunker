@@ -8,8 +8,8 @@
 <div class="py-2 px-2">
   <h5 class="h5 mb-6">Chunk history</h5>
 
-  <ul>
-    {#each $requests as reqResp}
+  <ul class="overflow-y-scroll max-h-[700px] px-1">
+    {#each $requests as reqResp (reqResp.request.id)}
       <li class="py-2 text-sm">
         <div class={`card card-hover p-4 flex justify-between items-center ${selId === reqResp.request.id ? 'border border-primary-500' : ''}`} transition:blur>
           <button type="button" class="cursor-pointer" on:click={() => selectedRequest.set(reqResp)}>
