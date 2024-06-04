@@ -6,5 +6,5 @@ export interface ChunkRequest {
   methodId: string,
   chunkSize: number,
   chunkOverlap: number,
-  separator?: string
+  separator: string
 }

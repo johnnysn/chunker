@@ -7,10 +7,27 @@
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
 	import { chunks } from '$lib/stores/chunks-store';
 	import ParametersFormGroup from '$lib/components/ParametersFormGroup.svelte';
-	import { requests } from '$lib/stores/requests-store';
+	import { requests, selectedRequest } from '$lib/stores/requests-store';
 
 	const toasts = getToastStore();
+	let rawText = '';
+	let methodId: string | null = null;
+	let parameters = {
+		chunkSize: 200,
+		chunkOverlap: 10,
+		separator: ''
+	};
+
 	$: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
+	$: {
+		if ($selectedRequest) {
+			rawText = $selectedRequest.request.text;
+			methodId = $selectedRequest.request.methodId;
+			parameters = {
+				...$selectedRequest.request
+			};
+		}
+	}
 
 	const submitToServer = async (
 		methodId: string,
@@ -83,19 +100,20 @@
 				name="text"
 				placeholder="Place your text to be chunked here."
 				required
+				value={rawText}
 			/>
 		</label>
 
 		<label class="label max-w-[320px]">
 			<span>Method</span>
-			<select class="select" required name="methodId">
+			<select class="select" required name="methodId" value={methodId}>
 				{#each $methods as method}
 					<option value={method.id}>{method.name}</option>
 				{/each}
 			</select>
 		</label>
 
-		<ParametersFormGroup />
+		<ParametersFormGroup {parameters} />
 
 		<div class="flex justify-start gap-3 mt-6">
 			<button class="btn variant-filled-primary" disabled={$appStatus.isLoading}>Send</button>

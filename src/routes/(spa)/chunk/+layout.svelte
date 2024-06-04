@@ -9,6 +9,8 @@
 	import Sidenav from './Sidenav.svelte';
 	import Sidehistory from './Sidehistory.svelte';
 	import Results from './Results.svelte';
+	import { chunks } from '$lib/stores/chunks-store';
+	import { selectedRequest } from '$lib/stores/requests-store';
 
 	const toastStore = getToastStore();
 
@@ -50,6 +52,12 @@
 	$: {
 		const { baseUrl, methodsEndpoint } = $apiConfig;
 		fetchMethods(baseUrl, methodsEndpoint);
+	}
+
+	$: {
+		if ( $selectedRequest ) {
+			chunks.set($selectedRequest.response);
+		}
 	}
 
 	$: {
