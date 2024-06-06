@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import re
 from typing import TypedDict
 from langchain_text_splitters import RecursiveCharacterTextSplitter, CharacterTextSplitter, TokenTextSplitter
+from tools.nltk_utilities import chunk_by_tokens, chunk_by_sentences
 
 
 class Chunk(TypedDict):
@@ -19,6 +20,7 @@ class Splitter(ABC):
     @abstractmethod
     def split(self, text: str, chunk_size: int, chunk_overlap: int, separator: str) -> list[Chunk]:
         pass
+
     @abstractmethod
     def desc(self) -> SplitterDesc:
         pass
@@ -109,4 +111,40 @@ class LCTokenSplitter(Splitter):
                 "number": i + 1,
                 "text": text
             } for i, text in enumerate(texts) 
+        ]
+
+
+class NltkTokenSplitter(Splitter):
+    def desc(self):
+        return {
+            "id": "nltk_token",
+            "name": "NLTK Token Splitter",
+            "description": "Split by tokens using NLTK"
+        }
+
+    def split(self, text: str, chunk_size: int, chunk_overlap: int = 0, separator: str = "") -> list[Chunk]:
+        texts = chunk_by_tokens(text, chunk_size)
+        return [
+            {
+                "number": i + 1,
+                "text": text
+            } for i, text in enumerate(texts)
+        ]
+
+
+class NltkSentenceSplitter(Splitter):
+    def desc(self):
+        return {
+            "id": "nltk_sentence",
+            "name": "NLTK Sentence Splitter",
+            "description": "Split by sentences using NLTK"
+        }
+
+    def split(self, text: str, chunk_size: int, chunk_overlap: int = 0, separator: str = "") -> list[Chunk]:
+        texts = chunk_by_sentences(text, chunk_size, chunk_overlap)
+        return [
+            {
+                "number": i + 1,
+                "text": text
+            } for i, text in enumerate(texts)
         ]

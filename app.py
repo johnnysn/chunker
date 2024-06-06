@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
 from flask import request
 from flask_cors import CORS
-from splitters import LCCharacterSplitter, LCTokenSplitter, SimpleParagraphSplitter, LCRecursiveCharSplitter
+import time
+from splitters import LCCharacterSplitter, LCTokenSplitter, SimpleParagraphSplitter, LCRecursiveCharSplitter, \
+    NltkTokenSplitter, NltkSentenceSplitter
 
 
 app = Flask(__name__)
@@ -13,7 +15,8 @@ def home():
     return "Hello world, this is Chunker!"
 
 
-splitters_list = [LCRecursiveCharSplitter(), LCCharacterSplitter(), LCTokenSplitter(), SimpleParagraphSplitter()]
+splitters_list = [LCRecursiveCharSplitter(), LCCharacterSplitter(), LCTokenSplitter(), SimpleParagraphSplitter(),
+                  NltkTokenSplitter(), NltkSentenceSplitter()]
 
 splitters = {
     splitter.desc()["id"]: splitter for splitter in splitters_list
@@ -38,7 +41,8 @@ def chunks_raw():
 
     splitter = splitters[method_id]
 
-    # time.sleep(5)
+    time.sleep(5)
+
     return jsonify({
         "chunks": splitter.split(
             text=text, 

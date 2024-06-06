@@ -17,13 +17,22 @@ Now you can upgrade pip:
 python -m pip install --upgrade pip
 ```
 
-and install Flask:
+and install the project dependencies:
 ```bash
-python -m pip install flask
+python -m pip install -r requirements.txt
 ```
 
 Once you've created the python script for your application (``app.py``), run it by executing:
 
 ```bash
 python -m flask --app ./app.py run
+```
+
+### NLKT
+
+In order to use the NLTK library you should run the following python commands in your environment:
+
+```python3
+import nltk
+nltk.download('punkt')
 ```
