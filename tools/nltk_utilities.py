@@ -1,36 +1,36 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
+from bs4 import BeautifulSoup
+from nltk.tokenize import sent_tokenize
+import nltk
 
 
-def chunk_by_tokens(text, max_words_per_chunk=100, language="english"):
-    sentences = sent_tokenize(text, language=language)
+def chunk_by_tokens(text, max_words_per_chunk=100, overlap = 0, language="english"):
+    soup = BeautifulSoup(text)
+    tokens = nltk.word_tokenize(soup.get_text(), language=language)
+
     chunks = []
+
+    print(tokens)
+
     current_chunk = []
-
-    for sentence in sentences:
-        words = word_tokenize(sentence, language=language)
-
-        if len(current_chunk) + len(words) <= max_words_per_chunk:
-            current_chunk.extend(words)
-        else:
+    for i in range(len(tokens)):
+        if len(current_chunk) > max_words_per_chunk:
             chunks.append(' '.join(current_chunk))
-            current_chunk = words
+            if i > 0 and overlap > 0:
+                current_chunk = current_chunk[-min(i, overlap):]
+            else:
+                current_chunk = []
 
-    if current_chunk:
+        current_chunk.append(tokens[i])
+
+    if len(current_chunk) > overlap:
         chunks.append(' '.join(current_chunk))
 
-    overlapping_chunks = []
-    for i in range(len(chunks)):
-        chunk_start = max(0, i - 1)
-        chunk_end = i + 1
-        overlapping_chunk = ' '.join(chunks[chunk_start:chunk_end])
-        overlapping_chunks.append(overlapping_chunk)
-
-    return overlapping_chunks
+    return chunks
 
 
 def chunk_by_sentences(source_text: str, sentences_per_chunk: int, overlap: int, language="english") -> list[str]:
-    if sentences_per_chunk < 2:
-        raise ValueError("The number of sentences per chunk must be 2 or more.")
+    if sentences_per_chunk < 1:
+        raise ValueError("The number of sentences per chunk must be 1 or more.")
     if overlap < 0 or overlap >= sentences_per_chunk - 1:
         raise ValueError("Overlap must be 0 or more and less than the number of sentences per chunk.")
 

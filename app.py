@@ -41,7 +41,7 @@ def chunks_raw():
 
     splitter = splitters[method_id]
 
-    time.sleep(5)
+    # time.sleep(5)
 
     return jsonify({
         "chunks": splitter.split(

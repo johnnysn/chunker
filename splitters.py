@@ -123,7 +123,7 @@ class NltkTokenSplitter(Splitter):
         }
 
     def split(self, text: str, chunk_size: int, chunk_overlap: int = 0, separator: str = "") -> list[Chunk]:
-        texts = chunk_by_tokens(text, chunk_size)
+        texts = chunk_by_tokens(text, chunk_size, chunk_overlap)
         return [
             {
                 "number": i + 1,
