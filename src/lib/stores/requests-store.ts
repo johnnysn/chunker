@@ -20,14 +20,16 @@ function createRequestsStore() {
   }
 
   function append(request: Omit<ChunkRequest, "id">, chunks: Chunk[]) {
+    const id = createId();
     const value = {
       request: {
         ...request,
-        id: createId()
+        id
       },
       response: chunks
     }
-    update(curr => [...curr, value])
+    update(curr => [...curr, value]);
+    return id;
   }
 
   function remove(id: string) {
@@ -42,5 +44,3 @@ function createRequestsStore() {
 }
 
 export const requests = createRequestsStore();
-
-export const selectedRequest = writable<RequestResponse | null>(null);

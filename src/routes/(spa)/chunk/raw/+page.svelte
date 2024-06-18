@@ -5,9 +5,10 @@
 	import { methods } from '$lib/stores/methods-store';
 	import { z } from 'zod';
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
-	import { chunks } from '$lib/stores/chunks-store';
 	import ParametersFormGroup from '$lib/components/ParametersFormGroup.svelte';
-	import { requests, selectedRequest } from '$lib/stores/requests-store';
+	import { requests } from '$lib/stores/requests-store';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	const toasts = getToastStore();
 	let rawText = '';
@@ -20,12 +21,19 @@
 
 	$: postUrl = $apiConfig.baseUrl + $apiConfig.chunkRawEndpoint;
 	$: {
-		if ($selectedRequest) {
-			rawText = $selectedRequest.request.text;
-			methodId = $selectedRequest.request.methodId;
-			parameters = {
-				...$selectedRequest.request
-			};
+		const urlParams = $page.url.searchParams;
+		const request_id = urlParams.get('request_id');
+
+		if (request_id) {
+			const selectedRequest = $requests.find((r) => r.request.id === request_id);
+
+			if (selectedRequest) {
+				rawText = selectedRequest.request.text;
+				methodId = selectedRequest.request.methodId;
+				parameters = {
+					...selectedRequest.request
+				};
+			}
 		}
 	}
 
@@ -45,11 +53,9 @@
 				body: JSON.stringify({ methodId, text, chunkSize, chunkOverlap })
 			});
 			const data = await response.json();
-			console.log(data);
 			const { chunks: retrievedChunks } = z.object({ chunks: z.array(chunkSchema) }).parse(data);
-			chunks.set(retrievedChunks);
 
-			requests.append(
+			const request_id = requests.append(
 				{
 					methodId,
 					text,
@@ -65,6 +71,8 @@
 				background: 'variant-filled-success',
 				timeout: 3000
 			});
+
+			goto(`/chunk/raw?request_id=${request_id}`);
 		} catch (error) {
 			console.error('Error:', error);
 			toasts.trigger({
