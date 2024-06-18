@@ -55,7 +55,7 @@
 	}
 
 	$: {
-		if ( $selectedRequest ) {
+		if ($selectedRequest) {
 			chunks.set($selectedRequest.response);
 		}
 	}
@@ -99,16 +99,16 @@
 		</button>
 	</div>
 </div>
-<div class="flex">
-	<div class="w-1/5 mr-6 bg-surface-500/5">
+<div class="flex flex-col lg:flex-row">
+	<div class="lg:w-1/5 mr-6 bg-surface-500/5 pb-6">
 		<Sidenav />
 	</div>
 
-	<div class="w-3/5 py-2">
+	<div class="lg:w-3/5 py-2">
 		<slot />
 	</div>
 
-	<div class="w-1/5 bg-surface-500/5 ml-6 py-2">
+	<div class="hidden lg:block lg:w-1/5 bg-surface-500/5 ml-6 py-2">
 		<Sidehistory />
 	</div>
 </div>

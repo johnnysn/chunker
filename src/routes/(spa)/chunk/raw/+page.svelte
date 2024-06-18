@@ -45,6 +45,7 @@
 				body: JSON.stringify({ methodId, text, chunkSize, chunkOverlap })
 			});
 			const data = await response.json();
+			console.log(data);
 			const { chunks: retrievedChunks } = z.object({ chunks: z.array(chunkSchema) }).parse(data);
 			chunks.set(retrievedChunks);
 
