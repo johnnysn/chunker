@@ -15,17 +15,20 @@
 		{#each $requests as reqResp (reqResp.request.id)}
 			<li class="py-2 text-sm">
 				<div
-					class={`card card-hover p-4 flex justify-between items-center ${request_id === reqResp.request.id ? 'border border-primary-500' : ''}`}
+					class={`card card-hover p-2 flex justify-between items-center ${request_id === reqResp.request.id ? 'border border-primary-500' : ''}`}
 					transition:blur
 				>
 					<a
 						type="button"
-						class="cursor-pointer"
+						class="cursor-pointer flex flex-col"
 						href={`/chunk/raw?request_id=${reqResp.request.id}`}
 					>
-						{reqResp.request.text.substring(0, 20)}... -
-						{reqResp.request.methodId} -
-						{reqResp.request.chunkSize}/{reqResp.request.chunkOverlap}
+						<h4 class="font-medium">{reqResp.request.methodId}</h4>
+						<p class="text-xs">
+							{reqResp.request.text.substring(0, 50)}
+							{reqResp.request.text.length > 50 ? '...' : ''}
+						</p>
+						<span class="text-xs">{reqResp.request.chunkSize}, {reqResp.request.chunkOverlap}</span>
 					</a>
 					<button
 						class="btn-icon"
