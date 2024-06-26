@@ -105,7 +105,7 @@
 			<span>Your text</span>
 			<textarea
 				class="textarea"
-				rows="12"
+				rows="6"
 				name="text"
 				placeholder="Place your text to be chunked here."
 				required
@@ -129,9 +129,3 @@
 		</div>
 	</form>
 </div>
-
-<style>
-	textarea {
-		resize: none;
-	}
-</style>
