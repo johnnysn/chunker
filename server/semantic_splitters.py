@@ -17,9 +17,17 @@ class AurelioLabsStatisticalSplitter(Splitter):
         chunker = StatisticalChunker(
             encoder=HuggingFaceEncoder(), max_split_tokens=chunk_size
         )
+        texts = []
+
         chunks = chunker(docs=[text])[0]
         if not chunks:
             return []
-        return [
-            {"number": i + 1, "text": text} for i, text in enumerate(chunks[0].splits)
-        ]
+
+        for chunk in chunks:
+            text = ""
+            for split in chunk.splits:
+                text += split + "\n"
+
+            texts.append(text)
+
+        return [{"number": i + 1, "text": text} for i, text in enumerate(texts)]
