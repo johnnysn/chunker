@@ -1,4 +1,4 @@
-# Chunker
+# Chunker server
 
 This is a Python API powered by Flask which should be seen as a template for testing your own text chunking methods for *retrieval augmented generation* (RAG) applications.
 
