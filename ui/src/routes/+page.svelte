@@ -15,7 +15,7 @@
 		</p>
 
 		<div class="flex justify-center space-x-2">
-			<a class="btn variant-filled" href="/chunk"> Get started now </a>
+			<a class="btn variant-filled" href="/app/chunk">Get started now</a>
 		</div>
 		<div class="space-y-6">
 			<p>Get the source code or contact me:</p>
