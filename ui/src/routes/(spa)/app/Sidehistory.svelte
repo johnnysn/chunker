@@ -21,7 +21,7 @@
 					<a
 						type="button"
 						class="cursor-pointer flex flex-col"
-						href={`/chunk/raw?request_id=${reqResp.request.id}`}
+						href={`/app/chunk?request_id=${reqResp.request.id}`}
 					>
 						<h4 class="font-medium">{reqResp.request.methodId}</h4>
 						<p class="text-xs">
@@ -34,7 +34,7 @@
 						class="btn-icon"
 						on:click={() => {
 							requests.remove(reqResp.request.id);
-							if (request_id === reqResp.request.id) goto(`/chunk/raw`);
+							if (request_id === reqResp.request.id) goto(`/app/chunk`);
 						}}
 					>
 						<Trash2 class="size-5" />

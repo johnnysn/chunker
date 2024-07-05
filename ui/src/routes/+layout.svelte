@@ -30,8 +30,8 @@
 			<nav class="flex items-center gap-3">
 				<a
 					class="btn btn-sm variant-ghost-surface flex items-center justify-center"
-					href="/chunk"
-					aria-label="Chunk"
+					href="/app/chunk"
+					aria-label="Application"
 				>
 					<Clapperboard class="size-6" />
 				</a>

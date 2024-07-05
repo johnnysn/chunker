@@ -5,7 +5,7 @@
 	import { methods } from '$lib/stores/methods-store';
 	import { z } from 'zod';
 	import { chunkSchema } from '$lib/schemas/chunk-schema';
-	import ParametersFormGroup from '$lib/components/ParametersFormGroup.svelte';
+	import ParametersFormGroup from './ParametersFormGroup.svelte';
 	import { requests } from '$lib/stores/requests-store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -72,7 +72,7 @@
 				timeout: 3000
 			});
 
-			goto(`/chunk/raw?request_id=${request_id}`);
+			goto(`/app/chunk?request_id=${request_id}`);
 		} catch (error) {
 			console.error('Error:', error);
 			toasts.trigger({
